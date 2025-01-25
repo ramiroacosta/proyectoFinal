@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { readProducts, writeProducts } from './utils'
+import { readProducts, writeProducts } from '../utils.js'
 const router = new Router();
 //lista todos los productos con limit
 router.get('/',(req, res) => {
@@ -8,7 +8,7 @@ router.get('/',(req, res) => {
     if (!isNaN(productLimit)&&productLimit>0) {
         res.send(productLimit.slice(0, productLimit));
     }else {
-        res.send(products)
+        res.json(products)
     }
 })
 router.get('/:productId',(req, res) => {
@@ -18,7 +18,7 @@ router.get('/:productId',(req, res) => {
     const product = products.find(p => p.id === productId)
     if (product) {
         console.log('el producto es :');
-        res.send(product)
+        res.json(product)
     }else {
         console.log('producto no encontrado');
         
@@ -51,7 +51,7 @@ router.post('/',(req, res) => {
     }
     products.push(newProduct)
     writeProducts(products);
-    res.status(201).send(newProduct);
+    res.status(201).json(newProduct);
 })
 
 
@@ -68,7 +68,7 @@ router.put('/:productId',(req, res) => {
     };
     products[productIndex] = updatedProduct; // Sobrescribir el producto en la lista
     writeProducts(products);
-    res.status(200).send({ message: 'producto actualizado exitosamente.', product: updatedProduct });
+    res.status(200).json({ message: 'producto actualizado exitosamente.', product: updatedProduct });
  });
 //eliminar por id 
 router.delete('/:productId',(req, res) => {

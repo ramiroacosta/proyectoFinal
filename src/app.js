@@ -10,8 +10,8 @@ const  PORT = 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"))
-app.use('/api/product', productsRouter);
-app.use('/api/cart', cartsRouter);
+app.use('/api/products', productsRouter);
+app.use('/api/carts', cartsRouter);
 //ESCUCHA
 app.listen(PORT, ()=> {
     console.log(`Server is running on port ${PORT}`)

@@ -1,0 +1,44 @@
+[
+  {
+    "id": 30,
+    "title": "Producto 1",
+    "description": "Descripción del producto 1",
+    "code": "1234",
+    "status": true,
+    "price": 100,
+    "stock": 50,
+    "category": "Electrónica",
+    "thumbnails": [
+      "imagen1.jpg",
+      "imagen2.jpg"
+    ]
+  },
+  {
+    "id": 65,
+    "title": "Producto 2",
+    "description": "Descripción del producto 2",
+    "code": "1237854",
+    "status": true,
+    "price": 100,
+    "stock": 50,
+    "category": "Electrónica",
+    "thumbnails": [
+      "imagen1.jpg",
+      "imagen2.jpg"
+    ]
+  },
+  {
+    "id": 49,
+    "title": "Producto 3",
+    "description": "Descripción del producto 3",
+    "code": "12315954",
+    "status": true,
+    "price": 100,
+    "stock": 50,
+    "category": "Electrónica",
+    "thumbnails": [
+      "imagen1.jpg",
+      "imagen2.jpg"
+    ]
+  }
+]

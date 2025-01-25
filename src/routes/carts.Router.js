@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { readCarts, writeCarts } from './utils';
+import { readCarts, writeCarts } from '../utils.js';
 const router = new Router();
 
 router.get('/:cartId',(req, res) => {
@@ -9,7 +9,7 @@ router.get('/:cartId',(req, res) => {
     if (!cartFind) {
         return res.status(404).send({error: 'Cart not found'});
     }
-    res.send(cartFind);
+    res.json(cartFind);
 })
 router.post('/',(req, res) => {
     const carts = readCarts();
@@ -20,26 +20,44 @@ router.post('/',(req, res) => {
     }
     carts.push(newCart);
     writeCarts(carts);
-    res.status(201).send({ message: 'Carrito creado exitosamente.', cart: newCart });
+    res.status(201).json({ message: 'Carrito creado exitosamente.', cart: newCart });
 })
-router.post('/:cartId/product/:produtcId',(req, res) => {
-    const cartId = parseInt(req.params.cartId)
-    const productId = parseInt(req.params.productId)
+router.post('/:cartId/product/:productId', (req, res) => {
+    const cartId = parseInt(req.params.cartId, 10);
+    const productId = parseInt(req.params.productId, 10);
+
+    // Leer los carritos desde el archivo
     const carts = readCarts();
+
+    // Validar que los IDs sean válidos
+    if (isNaN(cartId) || isNaN(productId)) {
+        return res.status(400).send({ error: 'Invalid cartId or productId' });
+    }
+
+    // Buscar el carrito por ID
     const cartFind = carts.find(cart => cart.id === cartId);
     if (!cartFind) {
-        return res.status(404).send({error: 'Cart not found'});
+        return res.status(404).send({ error: 'Cart not found' });
     }
-    const productFind = cartFind.products.find(product => product.id === productId);
+
+    // Buscar si el producto ya existe en el carrito
+    const productFind = cartFind.products.find(product => product.product === productId);
+
     if (productFind) {
+        // Incrementar la cantidad si el producto ya existe
         productFind.quantity += 1;
-    }else {
-        carts.products.push({product: productId, quantity: 1})
+    } else {
+        // Agregar un nuevo producto al carrito
+        cartFind.products.push({ product: productId, quantity: 1 });
     }
+
+    // Guardar los cambios en el archivo
     writeCarts(carts);
-    res.status(200).send({
-        message: `Producto con id ${productFind} agregado al carrito con id ${cartFind}.`,
+
+    // Responder con el carrito actualizado
+    res.status(200).json({
+        message: `Producto con id ${productId} agregado al carrito con id ${cartId}.`,
         cart: cartFind
     });
-})
+});
 export default router;
